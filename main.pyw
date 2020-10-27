@@ -4,7 +4,7 @@ from time import sleep
 from win10toast import ToastNotifier
 import datetime
 
-browser_link = "C:/Users/matej/AppData/Local/Programs/Opera GX/launcher.exe %s"
+browser_link = "C:/Users/matej/AppData/Local/Programs/Opera GX/launcher.exe"
 
 
 class Link:
@@ -35,6 +35,7 @@ array = []
 file = is_file("links")
 if file is not None:
 	load_from_file(file, array)
+	browser_link = browser_link + " %s"
 	while True:
                 toaster.show_toast("Začiatok", "Fungujem.",)
 		now = datetime.datetime.now()
