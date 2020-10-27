@@ -1,5 +1,6 @@
 1. pip install win10toast
-2. otvoris main.pyw a zmenis si cestu k tvojmu prehliadacu s tym ze na konci je %s (uvidis ako som to ja napisal)
-3. otvoris cmd a pustis, conzolu mozes zavriet
-4. ak chces vypnut process, chod to task managera a tam ho najdes pod Windows Command Processor
-5. ak menis vstupne data, musis skript pustit odznova
+2. open main.pyw and change the path to your favourite browser
+3. run the script
+4. to kill the process, go to task manager
+5. if you change input data, rerun the script
+    input data: "day" "hour" "minute" "title" "link"
