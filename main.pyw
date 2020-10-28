@@ -37,6 +37,7 @@ class File:
             global toaster
             toaster.show_toast("Upozornenie!", "Zmena vstupneho suboru.")
             self.modif_time = os.stat(self.file_name).st_mtime
+            self.array_of_items = []
             self.load_new_items()
 
 
