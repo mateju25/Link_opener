@@ -1,7 +1,7 @@
 import os
 import webbrowser
 from time import sleep
-from win10toast import ToastNotifier
+from plyer import notification
 import datetime
 
 
@@ -34,8 +34,7 @@ class File:
 
     def is_modified(self):
         if self.modif_time != os.stat(self.file_name).st_mtime:
-            global toaster
-            toaster.show_toast("Upozornenie!", "Zmena vstupneho suboru.")
+            notification.notify(title="Upozornenie!", message="Zmena vstupneho suboru.")
             self.modif_time = os.stat(self.file_name).st_mtime
             self.array_of_items = []
             self.load_new_items()
@@ -43,8 +42,7 @@ class File:
 
 def file_exists(p_file_name):
     while not os.path.exists(p_file_name):
-        global toaster
-        toaster.show_toast("Pozor!", "Súbor neexistuje.")
+        notification.notify(title="Pozor!", message="Súbor neexistuje.")
         return None
     return p_file_name
 
@@ -60,8 +58,6 @@ def load_from_file(p_file_name, p_arr):
             p_arr.append(Link(separated_line))
 
 
-toaster = ToastNotifier()
-
 links_file = File("links")
 browser_file = File("browsers")
 
@@ -70,20 +66,25 @@ if (links_file.file_name is not None) and (browser_file.file_name is not None):
     links_file.load_new_items()
     browser_file.load_new_items()
 
-    toaster.show_toast("Začiatok", "Fungujem.")
+    notification.notify(title="Začiatok", message="Fungujem.")
     while True:
-        now = datetime.datetime.now()
+        try:
+            now = datetime.datetime.now()
 
-        links_file.is_modified()
-        browser_file.is_modified()
+            links_file.is_modified()
+            browser_file.is_modified()
 
-        for link_item in links_file.array_of_items:
-            if (now.strftime("%A") == link_item.day) and (now.hour == link_item.hour) and (now.minute == link_item.minute):
+            for link_item in links_file.array_of_items:
+                if (now.strftime("%A") == link_item.day) and (now.hour == link_item.hour) and (
+                        now.minute == link_item.minute):
 
-                for browser_item in browser_file.array_of_items:
-                    if browser_item.browser == link_item.browser:
-                        webbrowser.get(browser_item.link_to).open(link_item.link_to)
+                    for browser_item in browser_file.array_of_items:
+                        if browser_item.browser == link_item.browser:
+                            webbrowser.get(browser_item.link_to).open(link_item.link_to)
 
-                toaster.show_toast(link_item.title, "Sústreď sa.")
-                sleep(60)
-        sleep(10)
+                    notification.notify(title=link_item.title, message="Sústreď sa.")
+                    sleep(60)
+            sleep(1)
+        except:
+            notification.notify(title="Pozor!", message="Niečo sa stalo.")
+            continue
